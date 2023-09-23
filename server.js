@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 const corsOptions = {
-  origin: 'http://3.91.51.108:80',
+  origin: 'http://3.91.51.108',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 
