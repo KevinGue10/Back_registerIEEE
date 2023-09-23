@@ -191,7 +191,8 @@ app.post('/proceso_pago', async (req, res) => {
         amount: Math.ceil(cobro*Dolar), //el monto del cobru es de $50.000 pesos
         description: "Inscripción conferencia IEEE C3", //esta descripción aparecera en la vista web
         expiration_days: 7, //el cobru podra ser pagado en los siguientes siete días
-        payment_method_enabled: `{ \"credit_card\": true, \"pse\": true }`,
+        payment_method_enabled: `{"pse": true, "credit_card": true }`, 
+        //payment_method_enabled: `{ \"credit_card\": true, \"pse\": true }`,
         platform: "API" // los cobrus creados usando el API deben tener API en este parametro
     }
 
@@ -205,7 +206,7 @@ app.post('/proceso_pago', async (req, res) => {
         },
         body: JSON.stringify(newCobru),
       });
-
+    
       if (responseCobro.status === 201) {
         const cobroResponse = await responseCobro.json();
         cobroURL = cobroResponse.url;
@@ -213,6 +214,7 @@ app.post('/proceso_pago', async (req, res) => {
           // Construir la URL de checkout
         const checkoutURL =`https://dev.cobru.co/${cobroResponse.url}`;
         res.json({ cobro: cobroResponse, checkoutURL });
+
       } else {
         console.error('Error al crear el cobro:', responseCobro.statusText);
         res.status(500).json({ error: 'Error al crear el cobro' });
@@ -245,12 +247,10 @@ app.post('/consultar_estado_cobro', async (req, res) => {
       if (response.status === 200) {
     
         const cobroest = await response.json();
-        cobroest.state=2
-        cobroest.name="Kevin Guerrero"
-        cobroest.date_payed=cobroest.date_created
+        
         cobroest.amountUS =cobroest.amount/Dolar
         res.json({cobroest});
-        if (cobroest.state==2 && activador_estado){
+        if (cobroest.state==3 && activador_estado){
           const psql = 'INSERT INTO Registros.Pagos_Realizados (nombre, apellidos,montoUSD,montoCOP) VALUES (?, ?, ?,?)';
           const pvalues = [
             formData.nombre,
@@ -300,10 +300,12 @@ app.post('/pagos_extras', (req, res) => {
  const formData = req.body; 
   if (formData.npgextras>0 && formData.nartextras==0){
   cobro=50*formData.npgextras
-  }else if (formData.nartextras>0 && formData.npgextras>0){
+  }else if (formData.nartextras>0 && formData.npgextras==0){
     cobro=70*formData.nartextras
+   
   } else {
     cobro=50*formData.npgextras+70*formData.nartextras
+  
   }
 
   // Envía la respuesta al cliente
