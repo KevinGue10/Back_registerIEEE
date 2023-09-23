@@ -89,7 +89,7 @@ app.post('/registro', (req, res) => {
     values.push(null);  
   }
   
-  if(validatorname!=formData.correo){
+  
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error al insertar datos en la base de datos:', err);
@@ -119,7 +119,7 @@ app.post('/registro', (req, res) => {
     }
     validatorname=formData.correo
   }
-}
+
 });
 
 app.post('/cobro', (req, res) => {
