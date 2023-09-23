@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Cambia esto a la URL de tu aplicación React
+  origin: 'http://3.91.51.108:3000',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 
