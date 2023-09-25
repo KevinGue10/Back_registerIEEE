@@ -248,13 +248,12 @@ app.post('/consultar_estado_cobro', async (req, res) => {
     
         const cobroest = await response.json();
         
-        cobroest.amountUS =cobroest.amount/Dolar
+        cobroest.amountUS =Math.ceil(cobroest.amount/Dolar)
         res.json({cobroest});
-        if (cobroest.state==3 && activador_estado){
-          const psql = 'INSERT INTO Registros.Pagos_Realizados (nombre, apellidos,montoUSD,montoCOP) VALUES (?, ?, ?,?)';
+         if (cobroest.state==3 && activador_estado){
+          const psql = 'INSERT INTO Registros.Pagos_Realizados (nombres,montoUSD,montoCOP) VALUES (?,?,?)';
           const pvalues = [
-            formData.nombre,
-            formData.apellidos,
+            formData.nombres,
             (cobroest.amount/Dolar),
             cobroest.amount 
           ]
