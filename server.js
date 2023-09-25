@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 const corsOptions = {
-  origin: 'http://54.236.126.192',
+  origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 
