@@ -312,7 +312,7 @@ app.post('/pagos_extras', (req, res) => {
   res.json({ cobro });
 });
 
-/*
+
  async function actualizarValorDolar() {
    try {
     const apiKey = '25e77a0caf79fe69d47073401031df33';  // Reemplaza con tu API key
@@ -345,6 +345,6 @@ const intervaloActualizacion = 12 * 60 * 60 * 1000; // 12 horas en milisegundos
 setInterval(actualizarValorDolar, intervaloActualizacion);
 
 // Llama a la función para actualizar el valor del dólar inmediatamente al iniciar la aplicación
-actualizarValorDolar();*/
+actualizarValorDolar();
 
 });
