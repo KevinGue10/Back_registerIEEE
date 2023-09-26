@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Cambia esto a la URL de tu aplicación React
+  origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 
@@ -89,7 +89,7 @@ app.post('/registro', (req, res) => {
     values.push(null);  
   }
   
-  if(validatorname!=formData.correo){
+  
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error al insertar datos en la base de datos:', err);
@@ -119,7 +119,7 @@ app.post('/registro', (req, res) => {
     }
     validatorname=formData.correo
   }
-}
+
 });
 
 app.post('/cobro', (req, res) => {
@@ -160,6 +160,9 @@ app.post('/cobro', (req, res) => {
       cobro = cobro+25;
     } 
 
+  }
+  if(formData.pimpuesto!=0){
+    cobro=cobro+(cobro*(formData.pimpuesto/100))
   }
 
   // Envía la respuesta al cliente
@@ -248,13 +251,13 @@ app.post('/consultar_estado_cobro', async (req, res) => {
     
         const cobroest = await response.json();
         
-        cobroest.amountUS =cobroest.amount/Dolar
+        cobroest.amountUS =Math.floor(cobroest.amount/Dolar)
         res.json({cobroest});
         if (cobroest.state==3 && activador_estado){
-          const psql = 'INSERT INTO Registros.Pagos_Realizados (nombres,montoUSD,montoCOP) VALUES (?,?,?)';
+          const psql = 'INSERT INTO Registros.Pagos_Realizados (nombre, apellidos,montoUSD,montoCOP) VALUES (?, ?, ?,?)';
           const pvalues = [
             formData.nombres,
-            (cobroest.amount/Dolar),
+            Math.floor(cobroest.amount/Dolar),
             cobroest.amount 
           ]
           activador_estado=false;
@@ -311,7 +314,7 @@ app.post('/pagos_extras', (req, res) => {
   res.json({ cobro });
 });
 
-/*
+
  async function actualizarValorDolar() {
    try {
     const apiKey = '25e77a0caf79fe69d47073401031df33';  // Reemplaza con tu API key
@@ -344,6 +347,6 @@ const intervaloActualizacion = 12 * 60 * 60 * 1000; // 12 horas en milisegundos
 setInterval(actualizarValorDolar, intervaloActualizacion);
 
 // Llama a la función para actualizar el valor del dólar inmediatamente al iniciar la aplicación
-actualizarValorDolar();*/
+actualizarValorDolar();
 
 });
