@@ -260,7 +260,7 @@ app.post('/consultar_estado_cobro', async (req, res) => {
         cobroest.amountUS =Math.floor(cobroest.amount/Dolar)
         res.json({cobroest});
         if (cobroest.state==3 && activador_estado){
-          const psql = 'INSERT INTO Registros.Pagos_Realizados (nombre, apellidos,montoUSD,montoCOP) VALUES (?, ?, ?,?)';
+          const psql = 'INSERT INTO Registros.Pagos_Realizados (nombres,,montoUSD,montoCOP) VALUES (?, ?, ?)';
           const pvalues = [
             formData.nombres,
             Math.floor(cobroest.amount/Dolar),
