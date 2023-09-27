@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 app.post('/registro', (req, res) => {
   const formData = req.body; 
 
-   const sql = 'INSERT INTO Registros.Registro_conferencia (nombres, apellidos, pais,ciudad,direccion,sexo,nacimiento,tipodocumento,documento, afiliacion, correo, telefono,oficio, miembro, membresia, participacion,asistencia, articulo1,paginas_a1,articulo2,paginas_a2,tutorial1,tutorial2) VALUES (?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?,?,?,?,?)';
+   const sql = 'INSERT INTO Registros.Registro_conferencia (nombres, apellidos, pais,ciudad,direccion,sexo,nacimiento,tipodocumento,documento, afiliacion, correo, telefono,oficio, miembro, membresia, participacion,asistencia, impuesto, articulo1,paginas_a1,articulo2,paginas_a2,tutorial1,tutorial2) VALUES (?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?,?,?,?,?)';
   const values = [
     formData.nombre,
     formData.apellidos,
@@ -67,6 +67,7 @@ app.post('/registro', (req, res) => {
     formData.numeroMembresia,
     formData.tipoParticipacion,
     formData.tipoAsistencia,
+    formData.pimpuesto,
     formData.articulos[0].articleNumber,
     formData.articulos[0].pages
   ];
