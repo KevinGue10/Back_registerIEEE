@@ -290,7 +290,7 @@ app.post('/consultar_estado_cobro', async (req, res) => {
 });
 
 app.get('/datos_usuarios', (req, res) => {
-  const query = 'SELECT nombres, apellidos FROM Registros.Registro_conferencia';
+  const query = 'SELECT DISTINCT nombres, apellidos FROM Registros.Registro_conferencia';
   
   // Ejecutar el query
   db.query(query, (err, results) => {
