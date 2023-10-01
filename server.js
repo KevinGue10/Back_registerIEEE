@@ -8,6 +8,7 @@ const mysql = require('mysql')
 const axios = require('axios');
 const cors = require('cors');
 require('dotenv').config();
+const nodemailer = require("nodemailer");
 let cobro=0;
 let Dolar=4000;
 let aToken='';
@@ -21,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 const corsOptions = {
-  origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org'],
+  origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org','http://localhost:3000'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 
@@ -289,18 +290,23 @@ app.post('/consultar_estado_cobro', async (req, res) => {
  
 });
 
-app.get('/datos_usuarios', (req, res) => {
-  const query = 'SELECT DISTINCT nombres, apellidos FROM Registros.Registro_conferencia';
+app.post('/datos_usuarios', (req, res) => {
+  const formData = req.body;
+ 
+  const query = 'SELECT DISTINCT nombres, apellidos FROM Registros.Registro_conferencia where documento ='+formData.doc;
   
   // Ejecutar el query
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).json({ error: 'Error al obtener nombres y apellidos' });
+      console.error('Error executing the query:', err);
+      res.status(500).json({ error: 'Error obtaining names and surnames' });
     } else {
-      
-      const nombresApellidos = results.map(row => `${row.nombres} ${row.apellidos}`);
-      res.json(nombresApellidos);
+      // Extract names and surnames from the results
+      let user=''
+      if(results.length>0){
+       user= results[0].nombres+" "+results[0].apellidos;
+    }
+      res.json(user);
     }
   });
 });
@@ -321,6 +327,39 @@ app.post('/pagos_extras', (req, res) => {
   res.json({ cobro });
 });
 
+
+app.post('/send_email', async (req, res) => {
+  const formData = req.body;
+
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.email_user,
+      pass: process.env.email_password,
+    },
+  });
+
+  try {
+    const info = await transporter.sendMail({
+      from: '"IEEE C3" <kevindev1008@gmail.com>',
+      to: formData.correo,
+      subject: 'Confirmation of registration for IEEE C3',
+      html: '<b>Hello,</b><p>This is the confirmation of your registration for IEEE C3. Your registration details are as follows:</p><p>Name: ' + formData.nombre + '</p><p>Email: ' + formData.correo + '</p>', // Replace with your email content
+    });
+
+    console.log('Message sent: %s', info.messageId);
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ message: 'Something went wrong while sending the email' });
+  }
+});
+
+
+
+/*
 
  async function actualizarValorDolar() {
    try {
@@ -355,5 +394,5 @@ setInterval(actualizarValorDolar, intervaloActualizacion);
 
 // Llama a la función para actualizar el valor del dólar inmediatamente al iniciar la aplicación
 actualizarValorDolar();
-
+*/
 });
