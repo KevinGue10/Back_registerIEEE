@@ -41,7 +41,7 @@
 
   <script>
 async function fetchData() {
-  const response = await fetch('http://54.236.126.19:8080/visualizar');
+  const response = await fetch('http://54.236.126.192:8080/visualizar');
   const data = await response.json();
   const tableBody = document.getElementById('data-table');
   tableBody.innerHTML = '';
