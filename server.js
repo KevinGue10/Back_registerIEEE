@@ -24,7 +24,7 @@ app.use('/static', express.static(path.join(__dirname, 'public'))); // Asumiendo
 
 
 const corsOptions = {
-  origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org','http://localhost:3000'],
+  origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org','http://localhost:3000','http://54.236.126.192:8080'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 
