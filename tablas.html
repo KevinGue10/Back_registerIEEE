@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Visualizar Datos</title>
+<link rel="stylesheet" type="text/css" href="/static/tablas.css">
+</head>
+<body>
+  <h1>Visualización de Datos</h1>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Pais</th>
+        <th>Ciudad</th>
+        <th>Direccion</th>
+        <th>Sexo</th>
+        <th>Fecha de Nacimiento</th>
+        <th>Tipo de documento</th>
+        <th>Documento de identidad</th>
+        <th>Afiliacion</th>
+        <th>Correo</th>
+        <th>Telefono</th>
+        <th>Oficio</th>
+        <th>Miembro</th>
+        <th>Numero Membresia</th>
+        <th>Participacion</th>
+        <th>Asistencia</th>
+        <th>Impuestos</th>
+        <th>Articulo 1</th>
+        <th>Paginas A1</th>
+        <th>Articulo 2</th>
+        <th>Paginas A2</th>
+        <th>Tutoriales 1</th>
+        <th>Tutoriales 2</th>
+      </tr>
+    </thead>
+    <tbody id="data-table"></tbody>
+  </table>
+
+  <script>
+async function fetchData() {
+  const response = await fetch('http://localhost:8080/visualizar');
+  const data = await response.json();
+  const tableBody = document.getElementById('data-table');
+  tableBody.innerHTML = '';
+
+  if (Array.isArray(data)) {
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${item.nombres}</td><td>${item.apellidos}</td><td>${item.pais}</td><td class="ciudad">${item.ciudad}</td><td>${item.direccion}</td>
+      <td>${item.sexo}</td><td>${item.nacimiento}</td><td>${item.tipodocumento}</td><td>${item.documento}</td><td>${item.afiliacion}</td>
+      <td>${item.correo}</td><td>${item.telefono}</td><td>${item.oficio}</td><td>${item.miembro}</td><td>${item.membresia}</td>
+      <td>${item.participacion}</td><td>${item.asistencia}</td><td>${item.impuesto}</td><td>${item.articulo1}</td><td>${item.paginas_a1}</td>
+      <td>${item.articulo2}</td><td>${item.paginas_a2}</td><td>${item.tutorial1}</td><td>${item.tutorial2}</td>`;
+      tableBody.appendChild(row);
+    });
+  } else {
+    console.error('Error: Data is not in the expected format');
+  }
+}
+
+fetchData();
+
+  </script>
+</body>
+</html>

@@ -20,6 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurar CORS para permitir solicitudes desde cualquier origen
 app.use(cors());
+app.use('/static', express.static(path.join(__dirname, 'public'))); // Asumiendo que tu CSS está en la carpeta 'public'
+
 
 const corsOptions = {
   origin: ['http://54.236.126.192', 'http://ieeec3register.org', 'http://www.ieeec3register.org','http://localhost:3000'],
@@ -342,11 +344,31 @@ app.post('/send_email', async (req, res) => {
   });
 
   try {
+
+    const htmlContent = `
+    <b>Hemos recibido tu registro al IEEE Colombian Caribbean Conference</b>
+    <p>Tu registro es el siguiente:</p>
+    <p>Nombre: ${formData.nombre} ${formData.apellidos}</p>
+    <p>Pais: ${formData.pais}</p>
+    <p>Ciudad: ${formData.ciudad}</p>
+    <p>Direccion: ${formData.direccion}</p>
+    <p>Sexo: ${formData.sexo}</p>
+    <p>Fecha de Nacimiento: ${formData.fechaNacimiento}</p>
+    <p>Documento: ${formData.tdoc}: ${formData.doc}</p>
+    <p>Afiliacion institucional: ${formData.afiliacion}</p>
+    <p>Correo: ${formData.correo}</p>
+    <p>Telefono: ${formData.telefono}</p>
+    <p>Oficio: ${formData.oficio}</p>
+    <p>Tipo de Participacion: ${formData.tipoParticipacion}</p>
+    
+    <b>Gracias por tu información</b>`;
+    /*${formData.tipoParticipacion === 'Autor' ? '<p> Articulo: '+formData.articulos[0].articleNumber+' '+formData.articulos[0].articleNumber+ 'p</p>' : ''}
+    ${formData.tipoParticipacion === 'Asistente' ? '<p>Esto es para asistentes.</p>' : ''}*/
     const info = await transporter.sendMail({
-      from: '"IEEE C3" <kevindev1008@gmail.com>',
+      from: '"IEEE C3" <cesarvilorian@ieee.org>',
       to: formData.correo,
-      subject: 'Confirmation of registration for IEEE C3',
-      html: '<b>Hello,</b><p>This is the confirmation of your registration for IEEE C3. Your registration details are as follows:</p><p>Name: ' + formData.nombre + '</p><p>Email: ' + formData.correo + '</p>', // Replace with your email content
+      subject: 'Confirmación de Registro al IEEE Colombian Caribbean Conference',
+      html:htmlContent,
     });
 
     console.log('Message sent: %s', info.messageId);
@@ -358,8 +380,28 @@ app.post('/send_email', async (req, res) => {
 });
 
 
+app.get('/visualizar', async (req, res) => {
+  try {
 
-/*
+    const query='SELECT * FROM Registro_conferencia'
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error executing the query:', err);
+        res.status(500).json({ error: 'Error obtaining names and surnames' });
+      } else {
+        res.json(results);  // Cambiado a res.json(results)
+      }
+    });
+  } catch (error) {
+    console.error('Error al obtener los datos:', error);
+    res.status(500).json({ error: 'Error al obtener los datos' });
+  }
+    });
+   
+app.get('/tablas', (req, res) => {
+  res.sendFile(path.join(__dirname, 'tablas.html'));
+});
+
 
  async function actualizarValorDolar() {
    try {
@@ -394,5 +436,5 @@ setInterval(actualizarValorDolar, intervaloActualizacion);
 
 // Llama a la función para actualizar el valor del dólar inmediatamente al iniciar la aplicación
 actualizarValorDolar();
-*/
+
 });

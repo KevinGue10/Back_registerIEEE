@@ -1,0 +1,22 @@
+/* Estilo para la primera columna */
+#data-table tr td:nth-child(3) {
+    width: 500px;
+  }
+  
+  /* Estilo para la segunda columna */
+ td {
+    width: 400%;
+  
+  }
+  .ciudad{
+    width: 600px;
+  }
+  table{
+    width: 30px;
+  }
+  
+ th {
+    background-color: #cac7c7; 
+    width: 1000px;
+  }
+ 
