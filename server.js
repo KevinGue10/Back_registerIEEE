@@ -182,7 +182,7 @@ app.post('/cobro', (req, res) => {
 app.post('/proceso_pago', async (req, res) => {
   try {
     // Obtener el access token
-    const responseToken = await fetch("https://dev.cobru.co/token/refresh/", {
+    const responseToken = await fetch("https://cobru.co/token/refresh/", {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -209,7 +209,7 @@ app.post('/proceso_pago', async (req, res) => {
         platform: "API" // los cobrus creados usando el API deben tener API en este parametro
     }
 
-      const responseCobro = await fetch("https://dev.cobru.co/cobru/", {
+      const responseCobro = await fetch("https://cobru.co/cobru/", {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -225,7 +225,7 @@ app.post('/proceso_pago', async (req, res) => {
         cobroURL = cobroResponse.url;
 
           // Construir la URL de checkout
-        const checkoutURL =`https://dev.cobru.co/${cobroResponse.url}`;
+        const checkoutURL =`https://cobru.co/${cobroResponse.url}`;
         res.json({ cobro: cobroResponse, checkoutURL });
 
       } else {
@@ -247,7 +247,7 @@ app.post('/consultar_estado_cobro', async (req, res) => {
   const formData = req.body;
   try {
     if (cobroURL) {
-      const response = await fetch(`https://dev.cobru.co/cobru_detail/${cobroURL}`, {
+      const response = await fetch(`https://cobru.co/cobru_detail/${cobroURL}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
