@@ -50,7 +50,6 @@ app.get('/', (req, res) => {
 //Ruta para manejar el registro
 app.post('/registro', (req, res) => {
   const formData = req.body; 
-
    const sql = 'INSERT INTO Registros.Registro_conferencia (nombres, apellidos, pais,ciudad,direccion,sexo,nacimiento,tipodocumento,documento, afiliacion, correo, telefono,oficio, miembro, membresia, participacion,asistencia, impuesto, articulo1,paginas_a1,articulo2,paginas_a2,tutorial1,tutorial2) VALUES (?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?,?,?,?,?)';
   const values = [
     formData.nombre,
@@ -174,7 +173,6 @@ app.post('/cobro', (req, res) => {
   if(formData.pimpuesto!=0){
     cobro=cobro+(cobro*(formData.pimpuesto/100))
   }
-
   // Envía la respuesta al cliente
   res.json({ cobro });
 });
@@ -182,7 +180,7 @@ app.post('/cobro', (req, res) => {
 app.post('/proceso_pago', async (req, res) => {
   try {
     // Obtener el access token
-    const responseToken = await fetch("https://cobru.co/token/refresh/", {
+    const responseToken = await fetch("https://cobru.me/token/refresh/", {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -204,12 +202,12 @@ app.post('/proceso_pago', async (req, res) => {
         amount: Math.ceil(cobro*Dolar), //el monto del cobru es de $50.000 pesos
         description: "Inscripción conferencia IEEE C3", //esta descripción aparecera en la vista web
         expiration_days: 7, //el cobru podra ser pagado en los siguientes siete días
-        payment_method_enabled: `{"pse": true, "credit_card": true }`, 
-        //payment_method_enabled: `{ \"credit_card\": true, \"pse\": true }`,
+        //payment_method_enabled: `{"pse": true, "credit_card": true }`, 
+        payment_method_enabled: `{ \"credit_card\": true, \"pse\": true }`,
         platform: "API" // los cobrus creados usando el API deben tener API en este parametro
     }
 
-      const responseCobro = await fetch("https://cobru.co/cobru/", {
+      const responseCobro = await fetch("https://cobru.me/cobru/", {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -225,7 +223,7 @@ app.post('/proceso_pago', async (req, res) => {
         cobroURL = cobroResponse.url;
 
           // Construir la URL de checkout
-        const checkoutURL =`https://cobru.co/${cobroResponse.url}`;
+        const checkoutURL =`https://cobru.me/${cobroResponse.url}`;
         res.json({ cobro: cobroResponse, checkoutURL });
 
       } else {
@@ -247,7 +245,7 @@ app.post('/consultar_estado_cobro', async (req, res) => {
   const formData = req.body;
   try {
     if (cobroURL) {
-      const response = await fetch(`https://cobru.co/cobru_detail/${cobroURL}`, {
+      const response = await fetch(`https://cobru.me/cobru_detail/${cobroURL}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -329,7 +327,7 @@ app.post('/pagos_extras', (req, res) => {
   res.json({ cobro });
 });
 
-
+ 
 app.post('/send_email', async (req, res) => {
   const formData = req.body;
 
