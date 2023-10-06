@@ -358,10 +358,10 @@ app.post('/send_email', async (req, res) => {
     <p>Telefono: ${formData.telefono}</p>
     <p>Oficio: ${formData.oficio}</p>
     <p>Tipo de Participacion: ${formData.tipoParticipacion}</p>
-    
+    ${formData.esMiembroIEEE === true ? '<p> Es miembro IEEE con numero de Membresia : '+formData.numeroMembresia+ ' </p>' : ''}
     <b>Gracias por tu información</b>`;
-    /*${formData.tipoParticipacion === 'Autor' ? '<p> Articulo: '+formData.articulos[0].articleNumber+' '+formData.articulos[0].articleNumber+ 'p</p>' : ''}
-    ${formData.tipoParticipacion === 'Asistente' ? '<p>Esto es para asistentes.</p>' : ''}*/
+   
+   /* ${formData.tipoParticipacion === 'Asistente' ? '<p>Esto es para asistentes.</p>' : ''}*/
     const info = await transporter.sendMail({
       from: '"IEEE C3" <cesarvilorian@ieee.org>',
       to: formData.correo,
