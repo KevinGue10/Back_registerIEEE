@@ -145,7 +145,7 @@ app.post('/cobro', (req, res) => {
     cobro=50
   } else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === false) {
     cobro=80
-  } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === false) {
+  } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === false) {
     cobro=140
   }
   
