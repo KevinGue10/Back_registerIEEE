@@ -135,6 +135,9 @@ app.post('/cobro', (req, res) => {
   const formData = req.body;
   // Lógica para calcular el valor de cobro
 
+  if(formData.cupon==='I333cDiscount!'){
+
+
   if (formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === true) {
     cobro = 150;
   } else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === false) {
@@ -159,6 +162,33 @@ app.post('/cobro', (req, res) => {
     cobro=cobro+(70*(formData.numArt-2))
 
   }
+} else {
+
+  if (formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === true) {
+    cobro = 200;
+  } else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === false) {
+    cobro=250
+  } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === false) {
+    cobro=300
+  } else if (formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === true) {
+    cobro=120
+  } else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === false) {
+    cobro=170
+  } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === false) {
+    cobro=220
+  } else if (formData.tipoParticipacion === 'Poster' && formData.esMiembroIEEE === true) {
+    cobro = 100;
+  }else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Poster' && formData.esMiembroIEEE === false) {
+    cobro=150
+  } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Poster' && formData.esMiembroIEEE === false) {
+    cobro=200
+  }
+  
+  if (formData.numArt>2){
+    cobro=cobro+(120*(formData.numArt-2))
+
+}
+}
   for (let i=0;i<formData.numArt;i++){
     if(formData.articulos[i].pages>6){
       cobro=cobro+(50*(formData.articulos[i].pages-6))
