@@ -171,11 +171,11 @@ app.post('/cobro', (req, res) => {
   } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Autor' && formData.esMiembroIEEE === false) {
     cobro=300
   } else if (formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === true) {
-    cobro=120
+    cobro=100
   } else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === false) {
-    cobro=170
+    cobro=150
   } else if (formData.oficio === 'Profesional' && formData.tipoParticipacion === 'Asistente' && formData.esMiembroIEEE === false) {
-    cobro=220
+    cobro=200
   } else if (formData.tipoParticipacion === 'Poster' && formData.esMiembroIEEE === true) {
     cobro = 100;
   }else if (formData.oficio === 'Estudiante' && formData.tipoParticipacion === 'Poster' && formData.esMiembroIEEE === false) {
