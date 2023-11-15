@@ -209,6 +209,9 @@ app.post('/cobro', (req, res) => {
   if(formData.pimpuesto!=0){
     cobro=cobro+(cobro*(formData.pimpuesto/100))
   }
+  if(formData.tipoParticipacion==='Patrocinador' || formData.tipoParticipacion==='Speaker'){
+    cobro=0;
+  }
   // Envía la respuesta al cliente
   res.json({ cobro });
 });
